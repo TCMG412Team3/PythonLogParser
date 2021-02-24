@@ -24,7 +24,7 @@ def main():
     
     for line in logFile:
         total_number_requests += 1
-        if "/1955:" in line:
+        if "/1995:" in line:
             last_year_requests += 1
     
     # Close the log file when we are done with it
