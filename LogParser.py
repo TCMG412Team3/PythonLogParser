@@ -18,8 +18,14 @@ def main():
         return 1
         
     # Determine total requests from the last year
-    
     # Determine total requests from the entire time period of the log
+    last_year_requests = 0
+    total_number_requests = 0
+    
+    for line in logFile:
+        total_number_requests += 1
+        if "/1955:" in line:
+            last_year_requests += 1
     
     # Close the log file when we are done with it
     logFile.close()
