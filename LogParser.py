@@ -31,9 +31,8 @@ def main():
     logFile.close()
     
     # Display the statitics determined above to the console
-    print(f"Total number of requests made last year: {last_year_requests}")
-    print(f"Total number of requests made in the whole time period: {total_number_requests}")
-    
+    print("Total number of requests made last year: {0}".format(last_year_requests))
+    print("Total number of requests made in the whole time period: {0}".format(total_number_requests))
     
 if __name__ == "__main__":
     main()
