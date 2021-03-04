@@ -49,12 +49,20 @@ def main():
     # Determine total requests from the entire time period of the log
     last_year_requests = 0
     total_number_requests = 0
+    four_hundred_codes = 0
+    three_hundred_codes = 0
     
     for line in logFile:
         total_number_requests += 1
         if "/1995:" in line:
             last_year_requests += 1
             
+        # finds & counts 4xx status codes
+        if re.search('\" 4[0-9]{2}', line) != None:
+            four_hundred_codes += 1
+        # finds & 3xx status codes
+        elif re.search('\" 3[0-9]{2}', line) != None:
+            three_hundred_codes += 1          
             
         #Get month
         if re.search('\d\d\/(.*)\/\d\d\d\d', line) != None:
@@ -94,13 +102,23 @@ def main():
                 novCount += 1                
             elif month == 'Dec':
                 decFile.write(line)
-                decCount += 1                
+                decCount += 1     
+    
+
     # Close the log file when we are done with it
     logFile.close()
+    
+    # calculates percentage of 3xx and 4xx codes 
+    four_hundred_code_percent = (four_hundred_codes / total_number_requests) * 100
+    three_hundred_code_percent = (three_hundred_codes / total_number_requests) * 100
     
     # Display the statitics determined above to the console
     print("Total number of requests made last year: {0}".format(last_year_requests))
     print("Total number of requests made in the whole time period: {0}".format(total_number_requests))
+
+    print("Percentage of requests not successful (4xx codes): {0:.3f}%".format(four_hundred_code_percent))
+    print("Percentage of requests redirected elsewhere (3xx codes): {0:.3f}%".format(three_hundred_code_percent))
+
     print("\n\n")
     print("Number of requests in January: {0}".format(janCount))
     print("Number of requests in February: {0}".format(febCount))
@@ -114,6 +132,7 @@ def main():
     print("Number of requests in October: {0}".format(octCount))
     print("Number of requests in November: {0}".format(novCount))
     print("Number of requests in December: {0}".format(decCount))
+
     
 if __name__ == "__main__":
     main()
