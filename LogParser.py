@@ -1,6 +1,7 @@
 import urllib.request
 import os.path
 import re
+import datetime
 
 def main():
     # Check if logfile already exists locally
@@ -44,7 +45,11 @@ def main():
     octCount = 0
     novCount = 0
     decCount = 0
+    
+    days = {}
+    weeks = {}
 
+        
     # Determine total requests from the last year
     # Determine total requests from the entire time period of the log
     last_year_requests = 0
@@ -114,28 +119,22 @@ def main():
             elif month == 'Dec':
                 decFile.write(line)
                 decCount += 1  
+        
+        if re.search('\d\d\/\w\w\w\/\d\d\d\d', line) != None:
+            dateString = re.search('\d\d\/\w\w\w\/\d\d\d\d', line).group(0)
+            date = datetime.datetime.strptime(dateString, '%d/%b/%Y')
+            week = date.isocalendar()[1]
+            if week in weeks:
+                weeks[week] += 1
+            else:
+                weeks[week] = 1
+            day = date.weekday()    
+            if day in days:
+                days[day] += 1
+            else:
+                days[day] = 1
                 
-         #get day
-            if weekday == 0:
-	            mon += 1
 
-            elif weekday == 1:
-	            tue += 1
-	
-            elif weekday == 2:
-            	wed += 1
-	
-            elif weekday == 3:
-	            thur += 1
-	
-            elif weekday == 4:
-	            fri += 1
-	
-            elif weekday == 5:
-	            sat += 1
-	
-            elif weekday == 6:
-	            sun += 1
  
 
     # Close the log file when we are done with it
@@ -148,10 +147,14 @@ def main():
     # Display the statitics determined above to the console
     print("Total number of requests made last year: {0}".format(last_year_requests))
     print("Total number of requests made in the whole time period: {0}".format(total_number_requests))
-
+    print("\n")
     print("Percentage of requests not successful (4xx codes): {0:.3f}%".format(four_hundred_code_percent))
     print("Percentage of requests redirected elsewhere (3xx codes): {0:.3f}%".format(three_hundred_code_percent))
-
+    print("\n")
+    #Prints most and least requested file
+    print("Most requested file:", max(things, key=things.get))
+    print("Least requested file:", min(things, key=things.get))
+    
     print("\n\n")
     print("Number of requests in January: {0}".format(janCount))
     print("Number of requests in February: {0}".format(febCount))
@@ -165,19 +168,14 @@ def main():
     print("Number of requests in October: {0}".format(octCount))
     print("Number of requests in November: {0}".format(novCount))
     print("Number of requests in December: {0}".format(decCount))
-
-    #prints weekday
-    print("Number of requests on a Monday: {0}".format(monCount)
-    print("Number of requests on a Tuesday: {0}".format(tueCount)
-    print("Number of requests on a Wednesday: {0}".format(wedCount)
-    print("Number of requests on a Thursday: {0}".format(thuCount)
-    print("Number of requests on a Friday: {0}".format(friCount)
-    print("Number of requests on a Saturday: {0}".format(satCount)
-    print("Number of requests on a Sunday: {0}".format(sunCount)
+    print("\n")
+   
     
-   #Prints most and least requested file
-    print("Most requested file:", max(things, key=things.get))
-    print("Least requested file:", min(things, key=things.get))
+    for day in days:
+        print("Number of requests on weekday {0}: {1}".format(day, days[day]))
+    print("\n")
+    for week in weeks:
+        print("Number of requests on week {0}: {1}".format(week, weeks[week]))
 
 
     
