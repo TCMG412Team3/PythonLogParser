@@ -125,3 +125,4 @@ dmypy.json
 
 # Exclude log file
 http_access_log
+*.txt
