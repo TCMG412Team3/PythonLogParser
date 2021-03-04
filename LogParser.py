@@ -17,7 +17,7 @@ def main():
     except:
         print("Error opening http_access_log file")
         return 1
-       
+
     #Open month log files
     janFile = open('Jan.txt', 'w')
     febFile = open('Feb.txt', 'w')
@@ -31,7 +31,7 @@ def main():
     octFile = open('Oct.txt', 'w')
     novFile = open('Nov.txt', 'w')
     decFile = open('Dec.txt', 'w')
-    
+
     janCount = 0
     febCount = 0
     marCount = 0
@@ -44,19 +44,30 @@ def main():
     octCount = 0
     novCount = 0
     decCount = 0
-       
+
     # Determine total requests from the last year
     # Determine total requests from the entire time period of the log
     last_year_requests = 0
     total_number_requests = 0
     four_hundred_codes = 0
     three_hundred_codes = 0
-    
+
+    # Create things list
+    things = {}
+
     for line in logFile:
         total_number_requests += 1
         if "/1995:" in line:
             last_year_requests += 1
-            
+
+        # Finds file name line by line
+        if re.search('GET (.*) HTTP', line) != None:
+            filename = re.search('GET (.*) HTTP', line).group(1)
+            if filename in things:
+                things[filename] += 1
+            else:
+                things[filename] = 1
+
         # finds & counts 4xx status codes
         if re.search('\" 4[0-9]{2}', line) != None:
             four_hundred_codes += 1
@@ -99,11 +110,11 @@ def main():
                 octCount += 1
             elif month == 'Nov':
                 novFile.write(line)
-                novCount += 1                
+                novCount += 1
             elif month == 'Dec':
                 decFile.write(line)
-                decCount += 1     
-    
+                decCount += 1  
+ 
 
     # Close the log file when we are done with it
     logFile.close()
@@ -132,6 +143,11 @@ def main():
     print("Number of requests in October: {0}".format(octCount))
     print("Number of requests in November: {0}".format(novCount))
     print("Number of requests in December: {0}".format(decCount))
+
+    #Prints most and least requested file
+    print("Most requested file:", max(things, key=things.get))
+    print("Least requested file:", min(things, key=things.get))
+
 
     
 if __name__ == "__main__":
