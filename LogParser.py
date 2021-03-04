@@ -2,7 +2,6 @@ import urllib.request
 import os.path
 import re
 
-
 def main():
     # Check if logfile already exists locally
     if not os.path.exists("http_access_log"):
@@ -19,7 +18,7 @@ def main():
         print("Error opening http_access_log file")
         return 1
 
-    # Open month log files
+    #Open month log files
     janFile = open('Jan.txt', 'w')
     febFile = open('Feb.txt', 'w')
     marFile = open('Mar.txt', 'w')
@@ -62,7 +61,6 @@ def main():
             last_year_requests += 1
 
         # Finds file name line by line
-
         if re.search('GET (.*) HTTP', line) != None:
             filename = re.search('GET (.*) HTTP', line).group(1)
             if filename in things:
@@ -75,9 +73,9 @@ def main():
             four_hundred_codes += 1
         # finds & 3xx status codes
         elif re.search('\" 3[0-9]{2}', line) != None:
-            three_hundred_codes += 1
-
-            # Get month
+            three_hundred_codes += 1          
+            
+        #Get month
         if re.search('\d\d\/(.*)\/\d\d\d\d', line) != None:
             month = re.search('\d\d\/(.*)\/\d\d\d\d', line).group(1)
             if month == 'Jan':
@@ -115,15 +113,16 @@ def main():
                 novCount += 1
             elif month == 'Dec':
                 decFile.write(line)
-                decCount += 1
+                decCount += 1  
+ 
 
-                # Close the log file when we are done with it
+    # Close the log file when we are done with it
     logFile.close()
-
-    # calculates percentage of 3xx and 4xx codes
+    
+    # calculates percentage of 3xx and 4xx codes 
     four_hundred_code_percent = (four_hundred_codes / total_number_requests) * 100
     three_hundred_code_percent = (three_hundred_codes / total_number_requests) * 100
-
+    
     # Display the statitics determined above to the console
     print("Total number of requests made last year: {0}".format(last_year_requests))
     print("Total number of requests made in the whole time period: {0}".format(total_number_requests))
@@ -150,5 +149,6 @@ def main():
     print("Least requested file:", min(things, key=things.get))
 
 
+    
 if __name__ == "__main__":
     main()
