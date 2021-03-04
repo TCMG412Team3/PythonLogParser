@@ -114,6 +114,28 @@ def main():
             elif month == 'Dec':
                 decFile.write(line)
                 decCount += 1  
+                
+         #get day
+            if weekday == 0:
+	            mon += 1
+
+            elif weekday == 1:
+	            tue += 1
+	
+            elif weekday == 2:
+            	wed += 1
+	
+            elif weekday == 3:
+	            thur += 1
+	
+            elif weekday == 4:
+	            fri += 1
+	
+            elif weekday == 5:
+	            sat += 1
+	
+            elif weekday == 6:
+	            sun += 1
  
 
     # Close the log file when we are done with it
@@ -144,7 +166,16 @@ def main():
     print("Number of requests in November: {0}".format(novCount))
     print("Number of requests in December: {0}".format(decCount))
 
-    #Prints most and least requested file
+    #prints weekday
+    print("Number of requests on a Monday: {0}".format(monCount)
+    print("Number of requests on a Tuesday: {0}".format(tueCount)
+    print("Number of requests on a Wednesday: {0}".format(wedCount)
+    print("Number of requests on a Thursday: {0}".format(thuCount)
+    print("Number of requests on a Friday: {0}".format(friCount)
+    print("Number of requests on a Saturday: {0}".format(satCount)
+    print("Number of requests on a Sunday: {0}".format(sunCount)
+    
+   #Prints most and least requested file
     print("Most requested file:", max(things, key=things.get))
     print("Least requested file:", min(things, key=things.get))
 
